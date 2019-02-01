@@ -20,7 +20,7 @@ iReporter enables any/every citizen to bring any form of corruption to the notic
 - `delete red-flag`Enables users to delete red-flag  records
 - `delete intervention`Enables users to delete intervention  records
 ## Heroku Link
-- https://ireporter3-challenge3.herokuapp.com
+- https://ireporter-challenge4.herokuapp.com
 ## Installation
 Clone the repository
 ```
