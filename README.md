@@ -24,7 +24,7 @@ iReporter enables any/every citizen to bring any form of corruption to the notic
 ## Installation
 Clone the repository
 ```
-$ https://github.com/frankopkusianwar/iReporter-challenge3.git
+$ https://github.com/frankopkusianwar/iReporter-challenge4.git
 $ cd iReporter
 ```
 Install virtualenv and create a virtual envirinment
