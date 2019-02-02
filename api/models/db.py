@@ -105,7 +105,7 @@ class DatabaseConnection:
     def edit_location(self, location, incident_Id):
         edit_location = "UPDATE incidents SET location='{}' WHERE id='{}' AND incident_type='intervention'".format(
             incident_Id, location)
-        self.cursor.execute(edit_location) 
+        self.cursor.execute(edit_location)
 
     def edit_intervention_location(self, location, incident_Id):
         edit_location = "UPDATE incidents SET location='{}' WHERE id='{}' AND incident_type='intervention'".format(
