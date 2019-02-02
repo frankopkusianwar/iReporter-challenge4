@@ -1,5 +1,5 @@
 from flask import request, jsonify
-from api.utilities import check_user, check_email, check_paswd
+from api.utilities import check_email, check_paswd
 import uuid
 import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -23,16 +23,6 @@ class UserController:
 
         validate_user = [first_name, last_name,
                          other_names, username, email, password]
-
-        for field in validate_user:
-            if type(field) != str:
-                return jsonify({"message":"fields should be strings"})
-
-        if check_user(validate_user) == "invalid":
-            return jsonify({
-                "status": 400,
-                "message": "please fill all fields"
-            }), 400
 
         if check_email(email) == "invalid":
             return jsonify({
@@ -65,8 +55,6 @@ class UserController:
     def login(self):
         auth_data = request.get_json()
 
-        if not auth_data.get('username') or not auth_data.get('password'):
-            return jsonify({"message": "please enter username and password"}), 401
         if not db.login(auth_data.get('username')):
             return jsonify({"message":"username does not exist please register"}), 401
         login_user = db.login(auth_data.get('username'))
