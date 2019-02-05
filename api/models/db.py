@@ -7,7 +7,7 @@ class DatabaseConnection:
     """docstring for DataBaseConnection"""
 
     def __init__(self):
-        #self.db = 'ireporter_db'
+        self.db = 'ireporter_db'
         #self.db = 'Ireporter_test_db'
         if os.getenv('ENV') == 'Testing':
             self.db_name='ireporter_test_db'
@@ -21,13 +21,13 @@ class DatabaseConnection:
             self.host="ec2-50-17-193-83.compute-1.amazonaws.com"
 
         try:
-            self.connection = psycopg2.connect(database=self.db_name, user=self.db_user, host=self.host, password=self.db_password, port='5432')
-            self.connection.autocommit = True
-            self.cursor = self.connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-
-            # self.connection = psycopg2.connect(database='ireporter_db', user='postgres', host='localhost', password='security93', port='5432')
+            # self.connection = psycopg2.connect(database=self.db_name, user=self.db_user, host=self.host, password=self.db_password, port='5432')
             # self.connection.autocommit = True
             # self.cursor = self.connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+
+            self.connection = psycopg2.connect(database='ireporter_db', user='postgres', host='localhost', password='security93', port='5432')
+            self.connection.autocommit = True
+            self.cursor = self.connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
             self.create_tables()
 
         except:
@@ -39,7 +39,7 @@ class DatabaseConnection:
                         username VARCHAR(100), email VARCHAR(100), password VARCHAR(100), is_admin BOOLEAN, registered DATE);"""
         self.cursor.execute(create_user_table)
         create_incident_table = """CREATE TABLE IF NOT EXISTS incidents(id SERIAL PRIMARY KEY,
-                        incident_type VARCHAR(100), location VARCHAR(100), status VARCHAR(100),
+                        incident_type VARCHAR(100), title VARCHAR(100), description VARCHAR(450), latitude VARCHAR(100), longitude VARCHAR(100), status VARCHAR(100),
                         images VARCHAR(100), videos VARCHAR(100), created_by INT, comment VARCHAR, created_on DATE);"""
         self.cursor.execute(create_incident_table)
 
@@ -61,9 +61,9 @@ class DatabaseConnection:
         user = self.cursor.fetchone()
         return user
 
-    def insert_incident(self, incident_type, location, status, images, videos, created_by, comment, created_on):
-        insert_incident = "INSERT INTO incidents(incident_type, location, status, images, videos, created_by, comment, created_on) VALUES('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')".format(
-            incident_type, location, status, images, videos, created_by, comment, created_on)
+    def insert_incident(self, incident_type, title, description, latitude, longitude, status, images, videos, created_by, comment, created_on):
+        insert_incident = "INSERT INTO incidents(incident_type, title, description, latitude, longitude, status, images, videos, created_by, comment, created_on) VALUES('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')".format(
+            incident_type, title, description, latitude, longitude, status, images, videos, created_by, comment, created_on)
         self.cursor.execute(insert_incident)
 
     def get_all_incidents(self):
@@ -102,14 +102,12 @@ class DatabaseConnection:
             incident_Id, comment)
         self.cursor.execute(edit_intervention_comment)
 
-    def edit_location(self, location, incident_Id):
-        edit_location = "UPDATE incidents SET location='{}' WHERE id='{}' AND incident_type='intervention'".format(
-            incident_Id, location)
+    def edit_location(self, lat, longi, incident_Id):
+        edit_location = "UPDATE incidents SET latitude='{}', longitude='{}' WHERE id='{}' AND incident_type='red-flag'".format(longi, incident_Id, lat)
         self.cursor.execute(edit_location)
 
-    def edit_intervention_location(self, location, incident_Id):
-        edit_location = "UPDATE incidents SET location='{}' WHERE id='{}' AND incident_type='intervention'".format(
-            incident_Id, location)
+    def edit_intervention_location(self, lat, longi, incident_Id):
+        edit_location = "UPDATE incidents SET latitude='{}', longitude='{}' WHERE id='{}' AND incident_type='intervention'".format(longi, incident_Id, lat)
         self.cursor.execute(edit_location)
 
     def edit_status(self, status, incident_Id):

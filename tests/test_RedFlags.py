@@ -6,7 +6,7 @@ from tests.base import BaseTest
 class TestEndpoints(BaseTest):
 
     def test_create_incident(self):
-        incident = {"incidentType":"red-flag", "location":"120.00", "status":"draft", "images":'image-url', "videos":"video-url","createdBy": 2, "comment":"", "created_on":"25-nov-2018"}
+        incident = {"incidentType":"red-flag", "title":"coruption", "description":"coruption", "latitude":"120.00", "longitude":"120.00", "status":"draft", "images":'image-url', "videos":"video-url","createdBy": 2, "comment":"", "created_on":"25-nov-2018"}
         response = self.test_client.post(
             'api/v1/incidents',
             content_type='application/json',
@@ -27,30 +27,6 @@ class TestEndpoints(BaseTest):
         message = json.loads(response.data.decode())
         self.assertEqual(message['message'],
                          'please enter incidentType as red-flag or intervention')
-
-    def test_check_empty_incident_fields(self):
-        incident = {"incidentType":"", "location":"", "status":"", "images":"", "videos":"video-url","createdBy": 2, "comment":"", "created_on":"25-nov-2018"}
-        response = self.test_client.post(
-            'api/v1/incidents',
-            content_type='application/json',
-            data=json.dumps(incident),
-            headers = {"x-access-token":self.user_token()}
-        )
-        message = json.loads(response.data.decode())
-        self.assertEqual(message['message'],
-                         'please fill all fields')
-
-    def test_check_if_fields_are_strings(self):
-        incident = {"incidentType":"red-flag", "location":23, "status":45, "images":'image-url', "videos":"video-url","createdBy": 2, "comment":"", "created_on":"25-nov-2018"}
-        response = self.test_client.post(
-            'api/v1/incidents',
-            content_type='application/json',
-            data=json.dumps(incident),
-            headers = {"x-access-token":self.user_token()}
-        )
-        message = json.loads(response.data.decode())
-        self.assertEqual(message['message'],
-                         'field should be a string')
 
     def test_get_all_incidents(self):
         response = self.test_client.get('api/v1/red-flags', headers = {"x-access-token":self.user_token()})
@@ -86,14 +62,14 @@ class TestEndpoints(BaseTest):
                          "updated intervention record's comment")
 
     def test_update_location(self):
-        resp = self.test_client.patch('api/v1/red-flags/{}/location'.format(1), content_type='application/json', headers = {"x-access-token":self.user_token()}, data=json.dumps({"location": "13.00"}))
+        resp = self.test_client.patch('api/v1/red-flags/{}/location'.format(1), content_type='application/json', headers = {"x-access-token":self.user_token()}, data=json.dumps({"latitude": "13.00", "longitude": "13.00"}))
         assert(resp.status_code) == 200
         message = json.loads(resp.data.decode())
         self.assertEqual(message['data'][0]['message'],
                          "updated red-flag record's location")
 
     def test_update_intervention_location(self):
-        resp = self.test_client.patch('api/v1/interventions/{}/location'.format(1), content_type='application/json', headers = {"x-access-token":self.user_token()}, data=json.dumps({"location": "13.00"}))
+        resp = self.test_client.patch('api/v1/interventions/{}/location'.format(1), content_type='application/json', headers = {"x-access-token":self.user_token()}, data=json.dumps({"latitude": "13.00", "longitude": "13.00"}))
         assert(resp.status_code) == 200
         message = json.loads(resp.data.decode())
         self.assertEqual(message['data'][0]['message'],
@@ -151,18 +127,6 @@ class TestEndpoints(BaseTest):
         self.assertEqual(message['message'],
                          "enter comment")
 
-    def test_add_empty_location_to_red_flag(self):
-        response = self.test_client.patch('api/v1/red-flags/{}/location'.format(1), content_type='application/json', headers = {"x-access-token":self.user_token()}, data=json.dumps({"location":""}))
-        message = json.loads(response.data.decode())
-        self.assertEqual(message['message'],
-                         "enter location")
-
-    def test_add_empty_intervention_location_to_red_flag(self):
-        response = self.test_client.patch('api/v1/interventions/{}/location'.format(1), content_type='application/json', headers = {"x-access-token":self.user_token()}, data=json.dumps({"location":""}))
-        message = json.loads(response.data.decode())
-        self.assertEqual(message['message'],
-                         "enter location")
-
     def test_add_string_comment_to_red_flag(self):
         response = self.test_client.patch('api/v1/red-flags/{}/comment'.format(1), content_type='application/json', headers = {"x-access-token":self.user_token()}, data=json.dumps({"comment":4}))
         message = json.loads(response.data.decode())
@@ -174,16 +138,3 @@ class TestEndpoints(BaseTest):
         message = json.loads(response.data.decode())
         self.assertEqual(message['message'],
                          "enter string")
-
-    def test_add_string_location_to_red_flag(self):
-        response = self.test_client.patch('api/v1/red-flags/{}/location'.format(1), content_type='application/json', headers = {"x-access-token":self.user_token()}, data=json.dumps({"location":3}))
-        message = json.loads(response.data.decode())
-        self.assertEqual(message['message'],
-                         "enter string")
-
-    def test_add_string_intervention_location_to_red_flag(self):
-        response = self.test_client.patch('api/v1/interventions/{}/location'.format(1), content_type='application/json', headers = {"x-access-token":self.user_token()}, data=json.dumps({"location":4}))
-        message = json.loads(response.data.decode())
-        self.assertEqual(message['message'],
-                         "enter string")
-                         
