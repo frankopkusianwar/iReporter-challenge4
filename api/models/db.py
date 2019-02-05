@@ -7,7 +7,7 @@ class DatabaseConnection:
     """docstring for DataBaseConnection"""
 
     def __init__(self):
-        self.db = 'ireporter_db'
+        #self.db = 'ireporter_db'
         #self.db = 'Ireporter_test_db'
         if os.getenv('ENV') == 'Testing':
             self.db_name='ireporter_test_db'
@@ -21,13 +21,13 @@ class DatabaseConnection:
             self.host="ec2-50-17-193-83.compute-1.amazonaws.com"
 
         try:
-            # self.connection = psycopg2.connect(database=self.db_name, user=self.db_user, host=self.host, password=self.db_password, port='5432')
-            # self.connection.autocommit = True
-            # self.cursor = self.connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-
-            self.connection = psycopg2.connect(database='ireporter_db', user='postgres', host='localhost', password='security93', port='5432')
+            self.connection = psycopg2.connect(database=self.db_name, user=self.db_user, host=self.host, password=self.db_password, port='5432')
             self.connection.autocommit = True
             self.cursor = self.connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+
+            # self.connection = psycopg2.connect(database='ireporter_db', user='postgres', host='localhost', password='security93', port='5432')
+            # self.connection.autocommit = True
+            # self.cursor = self.connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
             self.create_tables()
 
         except:
@@ -39,7 +39,7 @@ class DatabaseConnection:
                         username VARCHAR(100), email VARCHAR(100), password VARCHAR(100), is_admin BOOLEAN, registered DATE);"""
         self.cursor.execute(create_user_table)
         create_incident_table = """CREATE TABLE IF NOT EXISTS incidents(id SERIAL PRIMARY KEY,
-                        incident_type VARCHAR(100), title VARCHAR(100), description VARCHAR(450), latitude VARCHAR(100), longitude VARCHAR(100), status VARCHAR(100),
+                        incident_type VARCHAR(100), title VARCHAR(100), description VARCHAR(1000), latitude VARCHAR(100), longitude VARCHAR(100), status VARCHAR(100),
                         images VARCHAR(100), videos VARCHAR(100), created_by INT, comment VARCHAR, created_on DATE);"""
         self.cursor.execute(create_incident_table)
 
@@ -66,14 +66,16 @@ class DatabaseConnection:
             incident_type, title, description, latitude, longitude, status, images, videos, created_by, comment, created_on)
         self.cursor.execute(insert_incident)
 
-    def get_all_incidents(self):
-        query = "SELECT * FROM incidents WHERE incident_type='red-flag'"
+    def get_all_incidents(self, user_id):
+        query = "SELECT * FROM incidents WHERE incident_type='red-flag' AND created_by='{}'".format(
+            user_id)
         self.cursor.execute(query)
         incidents = self.cursor.fetchall()
         return incidents
 
-    def get_all_interventions(self):
-        query = "SELECT * FROM incidents WHERE incident_type='intervention'"
+    def get_all_interventions(self, user_id):
+        query = "SELECT * FROM incidents WHERE incident_type='intervention' AND created_by='{}'".format(
+            user_id)
         self.cursor.execute(query)
         incidents = self.cursor.fetchall()
         return incidents

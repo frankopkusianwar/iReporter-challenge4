@@ -36,20 +36,20 @@ class IncidentController:
             }]
         }), 201
 
-    def get_all_incident(self):
-        if not db.get_all_incidents():
+    def get_all_incident(self, user_id):
+        if not db.get_all_incidents(user_id):
             return jsonify({"status": 200, "message": "red-flag records not found"})
         return jsonify({
             "status": 200,
-            "data": db.get_all_incidents()
+            "data": db.get_all_incidents(user_id)
         })
 
-    def get_all_interventions(self):
-        if not db.get_all_interventions():
+    def get_all_interventions(self, user_id):
+        if not db.get_all_interventions(user_id):
             return jsonify({"status": 200, "message": "intervention records not found"})
         return jsonify({
             "status": 200,
-            "data": db.get_all_interventions()
+            "data": db.get_all_interventions(user_id)
         })
 
     def get_one_incident(self, particular_id):
