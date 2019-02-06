@@ -7,7 +7,7 @@ class DatabaseConnection:
     """docstring for DataBaseConnection"""
 
     def __init__(self):
-        self.db = 'ireporter_db'
+        # self.db = 'ireporter_db'
         #self.db = 'Ireporter_test_db'
         if os.getenv('ENV') == 'Testing':
             self.db_name='ireporter_test_db'
@@ -21,13 +21,13 @@ class DatabaseConnection:
             self.host="ec2-50-17-193-83.compute-1.amazonaws.com"
 
         try:
-            # self.connection = psycopg2.connect(database=self.db_name, user=self.db_user, host=self.host, password=self.db_password, port='5432')
-            # self.connection.autocommit = True
-            # self.cursor = self.connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-
-            self.connection = psycopg2.connect(database='ireporter_db', user='postgres', host='localhost', password='security93', port='5432')
+            self.connection = psycopg2.connect(database=self.db_name, user=self.db_user, host=self.host, password=self.db_password, port='5432')
             self.connection.autocommit = True
             self.cursor = self.connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+
+            # self.connection = psycopg2.connect(database='ireporter_db', user='postgres', host='localhost', password='security93', port='5432')
+            # self.connection.autocommit = True
+            # self.cursor = self.connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
             self.create_tables()
 
         except:
@@ -100,7 +100,7 @@ class DatabaseConnection:
         self.cursor.execute(edit_comment)
 
     def edit_intervention_comment(self, comment, incident_Id):
-        edit_intervention_comment = "UPDATE incidents SET comment='{}' WHERE id='{}' AND incident_type='intervention'".format(
+        edit_intervention_comment = "UPDATE incidents SET description='{}' WHERE id='{}' AND incident_type='intervention'".format(
             incident_Id, comment)
         self.cursor.execute(edit_intervention_comment)
 
