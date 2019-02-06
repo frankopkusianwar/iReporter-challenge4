@@ -11,7 +11,10 @@ class IncidentController:
     def create_incident(self, user_id):
         incident_data = request.get_json()
         incident_type = incident_data.get('incidentType')
-        location = incident_data.get('location')
+        title = incident_data.get('title')
+        description = incident_data.get('description')
+        latitude = incident_data.get('latitude')
+        longitude = incident_data.get('longitude')
         status = "draft"
         created_on = datetime.datetime.today()
         created_by = user_id
@@ -19,17 +22,12 @@ class IncidentController:
         videos = incident_data.get('videos')
         comment = ""
 
-        validate_fields = [location, images, videos]
-        for field in validate_fields:
-            if type(field) != str:
-                return jsonify({"status": 400, "message":"field should be a string"}), 400
-        if check_inc(validate_fields) == "invalid":
-            return jsonify({"status": 400, "message": "please fill all fields"}), 400
+        validate_fields = [title, description, latitude, longitude, images, videos]
+
         if incident_type != "red-flag" and incident_type != "intervention":
             return jsonify({"status": 400, "message": "please enter incidentType as red-flag or intervention"}), 400
 
-        db.insert_incident(incident_type, location, status,
-                           images, videos, created_by, comment, created_on)
+        db.insert_incident(incident_type, title, description, latitude, longitude, status, images, videos, created_by, comment, created_on)
 
         return jsonify({
             "data": [{
@@ -38,20 +36,20 @@ class IncidentController:
             }]
         }), 201
 
-    def get_all_incident(self):
-        if not db.get_all_incidents():
+    def get_all_incident(self, user_id):
+        if not db.get_all_incidents(user_id):
             return jsonify({"status": 200, "message": "red-flag records not found"})
         return jsonify({
             "status": 200,
-            "data": db.get_all_incidents()
+            "data": db.get_all_incidents(user_id)
         })
 
-    def get_all_interventions(self):
-        if not db.get_all_interventions():
+    def get_all_interventions(self, user_id):
+        if not db.get_all_interventions(user_id):
             return jsonify({"status": 200, "message": "intervention records not found"})
         return jsonify({
             "status": 200,
-            "data": db.get_all_interventions()
+            "data": db.get_all_interventions(user_id)
         })
 
     def get_one_incident(self, particular_id):
@@ -102,12 +100,10 @@ class IncidentController:
 
     def update_particular_location(self, location_id):
         location_data = request.get_json()
-        new_location = location_data.get("location")
-        if not new_location:
-            return jsonify({"message":"enter location"})
-        if type(new_location) != str:
-            return jsonify({"message":"enter string"})
-        db.edit_location(location_id, new_location)
+        new_latitude = location_data.get("latitude")
+        new_longitude = location_data.get("longitude")
+
+        db.edit_location(location_id, new_latitude, new_longitude)
         return jsonify({
             "data": [{
                 "status": 200,
@@ -117,12 +113,10 @@ class IncidentController:
 
     def update_intervention_location(self, location_id):
         location_data = request.get_json()
-        new_location = location_data.get("location")
-        if not new_location:
-            return jsonify({"message":"enter location"})
-        if type(new_location) != str:
-            return jsonify({"message":"enter string"})
-        db.edit_intervention_location(location_id, new_location)
+        new_latitude = location_data.get("latitude")
+        new_longitude = location_data.get("longitude")
+
+        db.edit_intervention_location(location_id, new_latitude, new_longitude)
         return jsonify({
             "data": [{
                 "status": 200,

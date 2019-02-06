@@ -39,12 +39,12 @@ def createIncident(current_user):
 @bp.route("/red-flags", methods=["GET"])
 @token_required
 def get_Red_flags(current_user):
-    return incident.get_all_incident()
+    return incident.get_all_incident(current_user)
 
 @bp.route("/interventions", methods=["GET"])
 @token_required
 def get_all_interventions(current_user):
-    return incident.get_all_interventions()
+    return incident.get_all_interventions(current_user)
 
 @bp.route("/red-flags/<int:red_flag_id>", methods=["GET", "DELETE"])
 @token_required
