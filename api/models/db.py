@@ -15,10 +15,10 @@ class DatabaseConnection:
             self.db_password='security93'
             self.host="127.0.0.1"
         else:
-            self.db_name='d5nbirnpdp8uf3'
-            self.db_user='lkubrypgdablqc'
-            self.db_password='daba00124bd2f6aee4050162a82d95a663bb9bac7fd3d64d452d324e8ab5e2e8'
-            self.host="ec2-23-23-184-76.compute-1.amazonaws.com"
+            self.db_name='d64t004p0frfge'
+            self.db_user='cpzhlsqwfnpdff'
+            self.db_password='8957efc63cc77cf3555dc7969ceaf47d1722fa8e776291a8356d0416c26c49c9'
+            self.host="ec2-54-83-44-4.compute-1.amazonaws.com"
 
         try:
             self.connection = psycopg2.connect(database=self.db_name, user=self.db_user, host=self.host, password=self.db_password, port='5432')
