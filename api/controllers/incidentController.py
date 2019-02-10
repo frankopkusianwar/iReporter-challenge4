@@ -71,10 +71,6 @@ class IncidentController:
     def create_comment(self, comment_id):
         comment_data = request.get_json()
         new_comment = comment_data.get("comment")
-        if not new_comment:
-            return jsonify({"message":"enter comment"})
-        if type(new_comment) != str:
-            return jsonify({"message":"enter string"})
         db.edit_comment(comment_id, new_comment)
         return jsonify({
             "data": [{
@@ -120,7 +116,7 @@ class IncidentController:
         return jsonify({
             "data": [{
                 "status": 200,
-                "message": "updated red-flag record's location"
+                "message": "updated intervention record's location"
             }]
         })
 

@@ -73,7 +73,7 @@ class TestEndpoints(BaseTest):
         assert(resp.status_code) == 200
         message = json.loads(resp.data.decode())
         self.assertEqual(message['data'][0]['message'],
-                         "updated red-flag record's location")
+                         "updated intervention record's location")
 
     def test_update_status(self):
         resp = self.test_client.patch('api/v1/red-flags/{}/status'.format(1), content_type='application/json', headers = {"x-access-token":self.user_token()}, data=json.dumps({"status":"resolved"}))
@@ -115,23 +115,11 @@ class TestEndpoints(BaseTest):
         self.assertEqual(message['message'],
                          'requested intervention-id not found')
 
-    def test_add_empty_comment_to_red_flag(self):
-        response = self.test_client.patch('api/v1/red-flags/{}/comment'.format(1), content_type='application/json', headers = {"x-access-token":self.user_token()}, data=json.dumps({"comment":""}))
-        message = json.loads(response.data.decode())
-        self.assertEqual(message['message'],
-                         "enter comment")
-
     def test_add_empty_intervention_comment_to_red_flag(self):
         response = self.test_client.patch('api/v1/interventions/{}/comment'.format(1), content_type='application/json', headers = {"x-access-token":self.user_token()}, data=json.dumps({"comment":""}))
         message = json.loads(response.data.decode())
         self.assertEqual(message['message'],
                          "enter comment")
-
-    def test_add_string_comment_to_red_flag(self):
-        response = self.test_client.patch('api/v1/red-flags/{}/comment'.format(1), content_type='application/json', headers = {"x-access-token":self.user_token()}, data=json.dumps({"comment":4}))
-        message = json.loads(response.data.decode())
-        self.assertEqual(message['message'],
-                         "enter string")
 
     def test_add_string_intervention_comment_to_red_flag(self):
         response = self.test_client.patch('api/v1/interventions/{}/comment'.format(1), content_type='application/json', headers = {"x-access-token":self.user_token()}, data=json.dumps({"comment":3}))
