@@ -36,6 +36,14 @@ class IncidentController:
             }]
         }), 201
 
+    def get_all_incident_record(self):
+        if not db.get_all_incident_records():
+            return jsonify({"status": 200, "message": "records not found"})
+        return jsonify({
+            "status": 200,
+            "data": db.get_all_incident_records()
+        })
+
     def get_all_incident(self, user_id):
         if not db.get_all_incidents(user_id):
             return jsonify({"status": 200, "message": "red-flag records not found"})
@@ -121,36 +129,13 @@ class IncidentController:
         })
 
     def change_particular_status(self, current_us, status_id):
-        if db.admin(current_us):
-            status_data = request.get_json()
-            new_status = status_data.get("status")
-            if not new_status:
-                return jsonify({"message":"enter status"})
-            if type(new_status) != str:
-                return jsonify({"message":"enter string"})
-            db.edit_status(status_id, new_status)
-            return jsonify({
-                "status": 200,
-                "message": "status updated successfully"
-            })
-        else:
-            return jsonify({"message":"only admin can change status"})
-
-    def change_intervention_status(self, current_us, status_id):
-        if db.admin(current_us):
-            status_data = request.get_json()
-            new_status = status_data.get("status")
-            if not new_status:
-                return jsonify({"message":"enter status"})
-            if type(new_status) != str:
-                return jsonify({"message":"enter string"})
-            db.edit_intervention_status(status_id, new_status)
-            return jsonify({
-                "status": 200,
-                "message": "status updated successfully"
-            })
-        else:
-            return jsonify({"message":"only admin can change status"})
+        status_data = request.get_json()
+        new_status = status_data.get("status")
+        db.edit_status(status_id, new_status)
+        return jsonify({
+            "status": 200,
+            "message": "status updated successfully"
+        })
 
     def delete_one_incident(self, delete_id):
         db.delete_incident(delete_id)

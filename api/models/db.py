@@ -1,6 +1,7 @@
 import os
 import psycopg2
 import psycopg2.extras
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 class DatabaseConnection:
@@ -43,6 +44,23 @@ class DatabaseConnection:
                         images VARCHAR(100), videos VARCHAR(100), created_by INT, comment VARCHAR, created_on DATE);"""
         self.cursor.execute(create_incident_table)
 
+        self.pasw = generate_password_hash('admin', method='sha256')
+        self.user = True
+        if self.get_admin():
+            return False
+        else:
+            self.insert_admin()
+
+    def insert_admin(self):
+        insert_admin = "INSERT INTO users(first_name, last_name, other_names, username, email, password, is_admin, registered) VALUES('administrator', 'administer', 'adimin', 'admin', 'admin@gmail.com', '{}', '{}', '25-nov-2019')".format(self.pasw, self.user)
+        self.cursor.execute(insert_admin)
+
+    def get_admin(self):
+        query = "SELECT * FROM users WHERE username='admin'"
+        self.cursor.execute(query)
+        us = self.cursor.fetchall()
+        return us
+
     def insert_user(self, first_name, last_name, other_names, username, email, password_hashed, is_admin, registered):
         insert_user = "INSERT INTO users(first_name, last_name, other_names, username, email, password, is_admin, registered) VALUES('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')".format(
             first_name, last_name, other_names, username, email, password_hashed, is_admin, registered)
@@ -65,6 +83,12 @@ class DatabaseConnection:
         insert_incident = "INSERT INTO incidents(incident_type, title, description, latitude, longitude, status, images, videos, created_by, comment, created_on) VALUES('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')".format(
             incident_type, title, description, latitude, longitude, status, images, videos, created_by, comment, created_on)
         self.cursor.execute(insert_incident)
+
+    def get_all_incident_records(self):
+        query = "SELECT * FROM incidents"
+        self.cursor.execute(query)
+        incidents = self.cursor.fetchall()
+        return incidents
 
     def get_all_incidents(self, user_id):
         query = "SELECT * FROM incidents WHERE incident_type='red-flag' AND created_by='{}'".format(
