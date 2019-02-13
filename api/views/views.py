@@ -31,10 +31,13 @@ def createUser():
     return user.create_user()
 
 
-@bp.route("/incidents", methods=["POST"])
+@bp.route("/incidents", methods=["POST", "GET"])
 @token_required
 def createIncident(current_user):
-    return incident.create_incident(current_user)
+    if request.method == 'POST':
+        return incident.create_incident(current_user)
+    else:
+        return incident.get_all_incident_record()
 
 @bp.route("/red-flags", methods=["GET"])
 @token_required
@@ -85,16 +88,10 @@ def add_comment_to_specific_intervention_record(current_user, comment_incident_i
     return incident.create_intervention_comment(comment_incident_id)
 
 
-@bp.route("/red-flags/<int:status_incident_id>/status", methods=["PATCH"])
+@bp.route("/incidents/<int:status_incident_id>/status", methods=["PATCH"])
 @token_required
 def change_red_flag_status(current_user, status_incident_id):
     return incident.change_particular_status(current_user, status_incident_id)
-
-@bp.route("/interventions/<int:status_incident_id>/status", methods=["PATCH"])
-@token_required
-def change_intervention_status(current_user, status_incident_id):
-    return incident.change_particular_status(current_user, status_incident_id)
-
 
 @bp.route("/login", methods=["POST"])
 def login_user():

@@ -34,6 +34,12 @@ class TestEndpoints(BaseTest):
         self.assertEqual(message['status'],
                          200)
 
+    def test_get_all_incident_records(self):
+        response = self.test_client.get('api/v1/incidents', headers = {"x-access-token":self.user_token()})
+        message = json.loads(response.data.decode())
+        self.assertEqual(message['status'],
+                         200)
+
     #check for getting single red-flag record
     def test_get_single_red_flag(self):
         response = self.test_client.get('api/v1/red-flags/{}'.format(1), headers = {"x-access-token":self.user_token()})
@@ -76,18 +82,11 @@ class TestEndpoints(BaseTest):
                          "updated intervention record's location")
 
     def test_update_status(self):
-        resp = self.test_client.patch('api/v1/red-flags/{}/status'.format(1), content_type='application/json', headers = {"x-access-token":self.user_token()}, data=json.dumps({"status":"resolved"}))
+        resp = self.test_client.patch('api/v1/incidents/{}/status'.format(1), content_type='application/json', headers = {"x-access-token":self.user_token()}, data=json.dumps({"status":"resolved"}))
         assert(resp.status_code) == 200
         message = json.loads(resp.data.decode())
         self.assertEqual(message['message'],
-                         'only admin can change status')
-
-    def test_update_intervention_status(self):
-        resp = self.test_client.patch('api/v1/interventions/{}/status'.format(1), content_type='application/json', headers = {"x-access-token":self.user_token()}, data=json.dumps({"status":"resolved"}))
-        assert(resp.status_code) == 200
-        message = json.loads(resp.data.decode())
-        self.assertEqual(message['message'],
-                         'only admin can change status')
+                         'status updated successfully')
 
     def test_delete_red_flag(self):
         response = self.test_client.delete('api/v1/red-flags/{}'.format(2),headers = {"x-access-token":self.user_token()})

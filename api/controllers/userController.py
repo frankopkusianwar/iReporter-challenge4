@@ -62,6 +62,8 @@ class UserController:
             access_token = jwt.encode({"userId": login_user['id'], "exp": datetime.datetime.utcnow(
             ) + datetime.timedelta(minutes=30)}, "franko@pkusianwar")
 
-            return jsonify({'access-token': access_token.decode('UTF-8')})
+            user_type = login_user['is_admin']
+
+            return jsonify({'access-token': access_token.decode('UTF-8'), 'userType': user_type})
         return jsonify({"message": "invalid password"}), 401
 
