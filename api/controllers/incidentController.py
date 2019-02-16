@@ -62,18 +62,10 @@ class IncidentController:
 
     def get_one_incident(self, particular_id):
         if not db.get_one_incident(particular_id):
-            return jsonify({"status": 200, "message": "requested red-flag-id not found"})
+            return jsonify({"status": 200, "message": "record not found"})
         return jsonify({
             "status": 200,
             "data": [db.get_one_incident(particular_id)]
-        })
-
-    def get_one_intervention(self, particular_id):
-        if not db.get_one_intervention(particular_id):
-            return jsonify({"status": 200, "message": "requested intervention-id not found"})
-        return jsonify({
-            "status": 200,
-            "data": [db.get_one_intervention(particular_id)]
         })
 
     def create_comment(self, comment_id):
@@ -83,22 +75,7 @@ class IncidentController:
         return jsonify({
             "data": [{
                 "status": 200,
-                "message": "updated red-flag record's comment"
-            }]
-        })
-
-    def create_intervention_comment(self, comment_id):
-        comment_data = request.get_json()
-        new_comment = comment_data.get("comment")
-        if not new_comment:
-            return jsonify({"message":"enter comment"})
-        if type(new_comment) != str:
-            return jsonify({"message":"enter string"})
-        db.edit_intervention_comment(comment_id, new_comment)
-        return jsonify({
-            "data": [{
-                "status": 200,
-                "message": "updated intervention record's comment"
+                "message": "updated record's comment"
             }]
         })
 
@@ -111,20 +88,7 @@ class IncidentController:
         return jsonify({
             "data": [{
                 "status": 200,
-                "message": "updated red-flag record's location"
-            }]
-        })
-
-    def update_intervention_location(self, location_id):
-        location_data = request.get_json()
-        new_latitude = location_data.get("latitude")
-        new_longitude = location_data.get("longitude")
-
-        db.edit_intervention_location(location_id, new_latitude, new_longitude)
-        return jsonify({
-            "data": [{
-                "status": 200,
-                "message": "updated intervention record's location"
+                "message": "updated record's location"
             }]
         })
 
@@ -142,15 +106,6 @@ class IncidentController:
         return jsonify({
             "data": [{
                 "status": 200,
-                "message": "red-flag record has been deleted"
-            }]
-        })
-
-    def delete_one_intervention(self, delete_id):
-        db.delete_intervention(delete_id)
-        return jsonify({
-            "data": [{
-                "status": 200,
-                "message": "intervention record has been deleted"
+                "message": "record has been deleted"
             }]
         })
