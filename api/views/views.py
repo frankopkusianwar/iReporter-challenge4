@@ -49,7 +49,7 @@ def get_Red_flags(current_user):
 def get_all_interventions(current_user):
     return incident.get_all_interventions(current_user)
 
-@bp.route("/red-flags/<int:red_flag_id>", methods=["GET", "DELETE"])
+@bp.route("/incidents/<int:red_flag_id>", methods=["GET", "DELETE"])
 @token_required
 def SpecificIncidents(current_user, red_flag_id):
     if request.method == 'GET':
@@ -57,36 +57,15 @@ def SpecificIncidents(current_user, red_flag_id):
     else:
         return incident.delete_one_incident(red_flag_id)
 
-@bp.route("/interventions/<int:intervention_id>", methods=["GET", "DELETE"])
-@token_required
-def SpecificInterventions(current_user, intervention_id):
-    if request.method == 'GET':
-        return incident.get_one_intervention(intervention_id)
-    else:
-        return incident.delete_one_intervention(intervention_id)
-
-@bp.route("/red-flags/<int:location_incident_id>/location", methods=["PATCH"])
+@bp.route("/incidents/<int:location_incident_id>/location", methods=["PATCH"])
 @token_required
 def edit_specific_incident_location(current_user, location_incident_id):
     return incident.update_particular_location(location_incident_id)
 
-
-@bp.route("/interventions/<int:location_incident_id>/location", methods=["PATCH"])
-@token_required
-def edit_specific_intervention_location(current_user, location_incident_id):
-    return incident.update_intervention_location(location_incident_id)
-
-
-@bp.route("/red-flags/<int:comment_incident_id>/comment", methods=["PATCH"])
+@bp.route("/incidents/<int:comment_incident_id>/comment", methods=["PATCH"])
 @token_required
 def add_comment_to_specific_red_flag_record(current_user, comment_incident_id):
     return incident.create_comment(comment_incident_id)
-
-@bp.route("/interventions/<int:comment_incident_id>/comment", methods=["PATCH"])
-@token_required
-def add_comment_to_specific_intervention_record(current_user, comment_incident_id):
-    return incident.create_intervention_comment(comment_incident_id)
-
 
 @bp.route("/incidents/<int:status_incident_id>/status", methods=["PATCH"])
 @token_required

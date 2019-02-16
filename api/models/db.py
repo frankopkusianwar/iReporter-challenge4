@@ -105,35 +105,19 @@ class DatabaseConnection:
         return incidents
 
     def get_one_incident(self, incident_Id):
-        query_incident = "SELECT * FROM incidents WHERE id='{}' AND incident_type='red-flag'".format(
-            incident_Id)
-        self.cursor.execute(query_incident)
-        incident = self.cursor.fetchone()
-        return incident
-
-    def get_one_intervention(self, incident_Id):
-        query_incident = "SELECT * FROM incidents WHERE id='{}' AND incident_type='intervention'".format(
+        query_incident = "SELECT * FROM incidents WHERE id='{}'".format(
             incident_Id)
         self.cursor.execute(query_incident)
         incident = self.cursor.fetchone()
         return incident
 
     def edit_comment(self, comment, incident_Id):
-        edit_comment = "UPDATE incidents SET description='{}' WHERE id='{}' AND incident_type='red-flag'".format(
+        edit_comment = "UPDATE incidents SET description='{}' WHERE id='{}'".format(
             incident_Id, comment)
         self.cursor.execute(edit_comment)
 
-    def edit_intervention_comment(self, comment, incident_Id):
-        edit_intervention_comment = "UPDATE incidents SET description='{}' WHERE id='{}' AND incident_type='intervention'".format(
-            incident_Id, comment)
-        self.cursor.execute(edit_intervention_comment)
-
     def edit_location(self, lat, longi, incident_Id):
-        edit_location = "UPDATE incidents SET latitude='{}', longitude='{}' WHERE id='{}' AND incident_type='red-flag'".format(longi, incident_Id, lat)
-        self.cursor.execute(edit_location)
-
-    def edit_intervention_location(self, lat, longi, incident_Id):
-        edit_location = "UPDATE incidents SET latitude='{}', longitude='{}' WHERE id='{}' AND incident_type='intervention'".format(longi, incident_Id, lat)
+        edit_location = "UPDATE incidents SET latitude='{}', longitude='{}' WHERE id='{}'".format(longi, incident_Id, lat)
         self.cursor.execute(edit_location)
 
     def edit_status(self, status, incident_Id):
@@ -141,24 +125,9 @@ class DatabaseConnection:
             incident_Id, status)
         self.cursor.execute(edit_status)
 
-    def edit_intervention_status(self, status, incident_Id):
-        edit_intervention_status = "UPDATE incidents SET status='{}' WHERE id='{}'".format(
-            incident_Id, status)
-        self.cursor.execute(edit_intervention_status)
-
     def delete_incident(self, incident_Id):
-        query = "DELETE FROM incidents WHERE id='{}' AND incident_type='red-flag'".format(incident_Id)
+        query = "DELETE FROM incidents WHERE id='{}'".format(incident_Id)
         self.cursor.execute(query)
-
-    def delete_intervention(self, incident_Id):
-        query = "DELETE FROM incidents WHERE id='{}' AND incident_type='intervention'".format(incident_Id)
-        self.cursor.execute(query)
-
-    def admin(self, cur_user):
-        query = "SELECT * FROM users WHERE id='{}' AND is_admin = 'True'".format(cur_user)
-        self.cursor.execute(query)
-        admin = self.cursor.fetchone()
-        return admin
 
     def drop_tables(self):
         """function that drops the tables"""
