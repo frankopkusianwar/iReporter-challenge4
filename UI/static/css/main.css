@@ -1,0 +1,294 @@
+header{
+    left: 0;
+    top: 0;
+    position: fixed;
+    width: 100%;
+    background-color: black;
+    border-bottom: 3px solid gold;
+}
+
+header h1{
+    color: white;
+}
+
+header a{
+    text-decoration: none;
+    float: right;
+    color: white;
+    margin: 0.3em;
+    border-right: 2px solid white;
+    padding: 0.3em;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+body{
+    background: rgb(245, 242, 242);
+}
+
+.word{
+    background: rgb(37, 96, 151);
+    width: 80%;
+    padding: 4%;
+    color: white;
+}
+
+.content{
+    margin: 15%;
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 2%;
+    background: rgb(37, 96, 151);
+
+}
+
+.letterI{
+    color: gold;
+}
+
+.form-content h3{
+    text-align: center;
+    color: white;
+}
+
+.form-content{
+    background-color: rgb(37, 96, 151);
+    border: 2px solid white;
+    border-radius: 2em;
+    padding: 5%;
+    width: 120%;
+}
+
+.form-content input{
+    border: 0px;
+    border-radius: 2em;
+    display: block;
+    width: 100%;
+    padding: 2%;
+    margin: 2%;
+}
+
+.login-text{
+    text-align: center;
+    color: white;
+}
+
+.login-text a{
+    text-decoration: none;
+    color: white;
+}
+
+.form-content a{
+    text-decoration: none;
+}
+
+.pages-content{
+    margin-top: 10%;
+}
+
+.redflag-contents{
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    grid-gap: 2%;
+    border: 0px;
+    background: white;
+    padding: 5%;
+    margin: 2%;
+}
+
+.redflag-contents item1{
+    border: 2px solid rgb(37, 96, 151);
+    text-align: center;
+    padding: 10px;
+}
+
+.redflag-contents h1{
+    color: rgb(37, 96, 151);
+}
+
+.redflag-contents a{
+    text-decoration: none;
+}
+
+.redflag-content{
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 3%;
+    border: 0px;
+    background: white;
+    padding: 5%;
+    margin: 2%;
+}
+
+.redflag-content input{
+    width: 100%;
+    border: 1px solid black;
+    border-radius: 2em;
+    padding: 1%;
+}
+
+.redflag-content select{
+    width: 100%;
+    border: 1px solid black;
+    border-radius: 2em;
+    padding: 1%;
+}
+
+.redflag-content textarea{
+    width: 100%;
+    border: 1px solid black;
+}
+
+.buttons input{
+    background: rgb(37, 96, 151);
+    color: white;
+    border: 1px solid rgb(37, 96, 151);
+}
+
+.sub input{
+    width: 35%;
+}
+
+.view-buttons input{
+    border: none;
+    width: 40%;
+    float: right;
+    margin: 0.2em;
+}
+
+.delete input{
+    background: red;
+    color: white;
+}
+
+.primary-button input{
+    background: rgb(37, 96, 151);
+    color: white;
+}
+
+.redflag-content h1{
+    color: rgb(37, 96, 151);
+}
+
+.label{
+    font-weight: bold;
+    color: rgb(37, 96, 151);
+}
+
+item2 a{
+    text-decoration: none;
+}
+
+.detail-content{
+    border: 0px;
+    background: white;
+    padding: 5%;
+    margin: 2%;
+}
+
+.detail-content img{
+    float: left;
+    margin: 0.5em;
+}
+
+.lat-long-input input{
+    width: 48%;
+    margin: 0.5%;
+}
+.location{
+    visibility: hidden;
+}
+
+.location input{
+    border: 1px solid rgb(37, 96, 151);
+}
+
+.show{
+    visibility: visible;
+    -webkit-animation: fadeIn 1s;
+    animation: fadeIn 1s;
+}
+
+#map {
+    height: 60vh;
+    width: 70vh;
+    margin-bottom: 10px;
+}
+
+.card {
+  padding: 2px;
+  border: 1px solid rgb(37, 96, 151);
+}
+
+.card_space {
+    margin-left: 80px;
+}
+
+footer{
+    left: 0;
+    bottom: 0;
+    position: fixed;
+    width: 100%;
+    background-color: black;
+    color: white;
+    padding: 0.2%;
+}
+
+.header-content .icon {
+    display: none;
+}
+@media only screen and (max-width: 600px) {
+
+    .content{
+        padding-top: 20%;
+    }
+    .redflag-content input{
+        display: block;
+        margin: 0.5em;
+        width: 100%;
+    }
+
+    .redflag-content textarea{
+        width: 100%;
+    }
+
+    .redflag-content{
+        display: grid;
+        grid-template-columns: auto;
+        grid-gap: 3%;
+        border: 0px;
+        background: white;
+        padding: 10%;
+        margin: 3%;
+    }
+
+    .pages-content{
+        margin-top: 25%;
+    }
+
+    .header-content a {display: none;}
+
+    .header-content a.icon {
+    float: right;
+    display: block;
+  }
+
+  footer{
+    margin-top: 20%;
+}
+
+}
+
+@media only screen and (max-width: 600px) {
+    .header-content.responsive {position: relative;}
+    .header-content.responsive a.icon {
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+    .header-content.responsive a {
+      float: none;
+      display: block;
+      text-align: left;
+    }
+  }
+
