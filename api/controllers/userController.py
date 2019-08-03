@@ -64,6 +64,6 @@ class UserController:
 
             user_type = login_user['is_admin']
 
-            return jsonify({'access-token': access_token.decode('UTF-8'), 'userType': user_type})
+            return jsonify({'token': access_token.decode('UTF-8'), 'userType': user_type})
         return jsonify({"message": "invalid password"}), 401
 
