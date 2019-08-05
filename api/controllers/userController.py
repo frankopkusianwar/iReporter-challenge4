@@ -36,9 +36,9 @@ class UserController:
                 "message": "password should be more than 8 characters"
             }), 400
         if db.login(username):
-            return jsonify({"message":"username already exists"})
+            return jsonify({"message":"username already exists"}), 400
         if db.check_mail(email):
-            return jsonify({"message":"email already exists"})
+            return jsonify({"message":"email already exists"}), 400
 
         password_hashed = generate_password_hash(
             user_data.get('password'), method='sha256')
