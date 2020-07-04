@@ -27,23 +27,23 @@ function login(){
         .then((message)=>{
 
             var user_type = message['userType']
-            if(message['access-token'] && user_type === false){
+            if(message['token'] && user_type === false){
                 window.location.replace('profile.html');
                 var token = message['access-token'];
                 localStorage.setItem('access-token', token);
                 localStorage.setItem('user', username);
 
-            }else if(message['access-token'] && user_type === true){
+            }else if(message['token'] && user_type === true){
                 window.location.replace('adminviewrecords.html');
                 var token = message['access-token'];
                 localStorage.setItem('access-token', token);
                 localStorage.setItem('user', username);
                 //alert(str);
             }else if(message['message']==='username does not exist please register'){
-                alert('invalid login credentials!');
+                alert('username does not exist!');
                return false
             }else{
-                alert('invalid login credentials');
+                alert('invalid login credentials!');
                return false
             }
     });
