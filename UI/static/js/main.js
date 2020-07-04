@@ -30,13 +30,13 @@ function login(){
             if(message['token'] && user_type === false){
                 window.location.replace('profile.html');
                 var token = message['access-token'];
-                localStorage.setItem('access-token', token);
+                localStorage.setItem('access-token', message['token']);
                 localStorage.setItem('user', username);
 
             }else if(message['token'] && user_type === true){
                 window.location.replace('adminviewrecords.html');
                 var token = message['access-token'];
-                localStorage.setItem('access-token', token);
+                localStorage.setItem('access-token', message['token']);
                 localStorage.setItem('user', username);
                 //alert(str);
             }else if(message['message']==='username does not exist please register'){

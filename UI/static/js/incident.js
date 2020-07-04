@@ -1,5 +1,4 @@
 var valid_token = localStorage.getItem('access-token');
-
 function addIncident(){
     //capturing user data
     var title=document.getElementById('title').value;
