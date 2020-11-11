@@ -33,5 +33,5 @@ pytest-cov==2.6.1
 requests==2.21.0
 six==1.11.0
 urllib3==1.24.1
-Werkzeug==0.14.1
+Werkzeug==0.15.3
 wrapt==1.10.11
